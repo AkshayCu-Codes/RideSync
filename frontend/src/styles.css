@@ -1,0 +1,19 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #17212b;
+  background: #f7f9fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+}
