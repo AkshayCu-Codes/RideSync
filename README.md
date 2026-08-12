@@ -24,6 +24,8 @@ npm install
 npm run dev
 ```
 
+The frontend is served at `http://localhost:5176` by default.
+
 Before starting it, copy `.env.example` to `.env` and set the Google Maps values. Create a browser key in Google Cloud, enable the **Maps JavaScript API**, and restrict the key to your development and production HTTP referrers. Create and provide a Google Maps Map ID; it is required for the modern Advanced Marker used for the current-location pin.
 
 In a second terminal, start the backend:

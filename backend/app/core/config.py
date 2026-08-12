@@ -10,7 +10,7 @@ class Settings(BaseSettings):
 
     environment: str = "development"
     log_level: str = "INFO"
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    cors_origins: str = "http://localhost:5176,http://127.0.0.1:5176"
 
     @property
     def allowed_cors_origins(self) -> list[str]:
