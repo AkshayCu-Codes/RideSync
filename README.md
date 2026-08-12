@@ -49,3 +49,11 @@ docker compose up --build
 ## Milestone status
 
 Milestone 3 adds a modular FastAPI foundation with health checks, CORS, environment-based configuration, and JSON logging. No ride creation, database, or WebSocket behavior has been implemented.
+
+## Progress
+
+### Milestone 3 — Google Maps location view
+
+The frontend displays a full-screen Google Map, requests browser geolocation, and marks the rider's current location.
+
+![RideSync Google Maps location view](docs/images/milestone-3-map.png.png)
