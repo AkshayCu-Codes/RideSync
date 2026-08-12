@@ -36,6 +36,8 @@ pip install -e .[dev]
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+The API liveness endpoint is available at `http://localhost:8000/health`. Backend settings are read from environment variables. For local browser access, set `BACKEND_CORS_ORIGINS` to a comma-separated list of permitted frontend origins; production deployments should use only their explicit HTTPS origins.
+
 Alternatively, copy `.env.example` to `.env` and run:
 
 ```bash
@@ -44,4 +46,4 @@ docker compose up --build
 
 ## Milestone status
 
-Milestone 2 adds the client-side Google Maps view and one-time browser geolocation. No ride sharing, user management, or real-time communication has been implemented.
+Milestone 3 adds a modular FastAPI foundation with health checks, CORS, environment-based configuration, and JSON logging. No ride creation, database, or WebSocket behavior has been implemented.
