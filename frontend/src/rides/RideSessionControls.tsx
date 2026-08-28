@@ -5,7 +5,8 @@ export function RideSessionControls() {
   const [rideName, setRideName] = useState('')
   const [rideId, setRideId] = useState('')
   const [displayName, setDisplayName] = useState('')
-  const { ride, participant, error, isCreating, isJoining, create, join } = useRideSession()
+  const { ride, participant, error, isCreating, isJoining, isLeaving, create, join, leave } =
+    useRideSession()
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -24,6 +25,10 @@ export function RideSessionControls() {
     if (joinedParticipant) {
       setDisplayName('')
     }
+  }
+
+  async function handleLeave() {
+    await leave()
   }
 
   return (
@@ -75,9 +80,14 @@ export function RideSessionControls() {
       </form>
 
       {participant && (
-        <p className="ride-controls__success" role="status">
-          Joined as <strong>{participant.display_name}</strong>.
-        </p>
+        <div className="ride-controls__membership" role="status">
+          <p className="ride-controls__success">
+            Joined as <strong>{participant.display_name}</strong>.
+          </p>
+          <button disabled={isLeaving} onClick={handleLeave} type="button">
+            {isLeaving ? 'Leaving…' : 'Leave ride'}
+          </button>
+        </div>
       )}
       {error && <p className="ride-controls__error" role="alert">{error}</p>}
     </aside>

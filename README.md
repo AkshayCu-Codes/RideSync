@@ -48,7 +48,7 @@ docker compose up --build
 
 ## Milestone status
 
-Milestone 3 adds a modular FastAPI foundation with health checks, CORS, environment-based configuration, and JSON logging. No ride creation, database, or WebSocket behavior has been implemented.
+Milestone 4 adds the initial ride-session workflow: riders can create a session, join it with a display name, and leave it through the React client and versioned FastAPI endpoints. Session state is intentionally in-memory only; database persistence, real-time location sharing, and WebSockets have not yet been implemented.
 
 ## Progress
 

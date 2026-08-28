@@ -13,15 +13,21 @@ export type Participant = {
   joined_at: string
 }
 
+export type LeaveRideResult = {
+  participant_id: string
+  ride_id: string
+  status: 'left'
+}
+
 type ApiErrorResponse = {
   detail?: string
 }
 
-async function request<T>(path: string, body: object): Promise<T> {
+async function request<T>(path: string, method: 'POST' | 'DELETE', body?: object): Promise<T> {
   const response = await fetch(`${environment.apiBaseUrl}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
   })
 
   if (!response.ok) {
@@ -33,11 +39,18 @@ async function request<T>(path: string, body: object): Promise<T> {
 }
 
 export function createRide(name: string): Promise<Ride> {
-  return request<Ride>('/api/v1/rides', { name })
+  return request<Ride>('/api/v1/rides', 'POST', { name })
 }
 
 export function joinRide(rideId: string, displayName: string): Promise<Participant> {
-  return request<Participant>(`/api/v1/rides/${rideId}/participants`, {
+  return request<Participant>(`/api/v1/rides/${rideId}/participants`, 'POST', {
     display_name: displayName,
   })
+}
+
+export function leaveRide(rideId: string, participantId: string): Promise<LeaveRideResult> {
+  return request<LeaveRideResult>(
+    `/api/v1/rides/${rideId}/participants/${participantId}`,
+    'DELETE',
+  )
 }

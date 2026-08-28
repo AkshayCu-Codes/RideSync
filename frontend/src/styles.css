@@ -80,6 +80,17 @@ body {
   overflow-wrap: anywhere;
 }
 
+.ride-controls__membership {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.ride-controls__membership .ride-controls__success {
+  margin-top: 1rem;
+}
+
 .ride-controls__success {
   color: #155724;
 }
