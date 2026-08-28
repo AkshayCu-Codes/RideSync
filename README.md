@@ -57,3 +57,9 @@ Milestone 4 adds the initial ride-session workflow: riders can create a session,
 The frontend displays a full-screen Google Map, requests browser geolocation, and marks the rider's current location.
 
 ![RideSync Google Maps location view](docs/images/milestone-3-map.png.png)
+
+### Milestone 4 — Ride session workflow
+
+Riders can create a session, join it with a display name, leave it, and share a join link through the map overlay. The browser share sheet supports WhatsApp and other installed sharing apps; a clipboard fallback is used where native sharing is unavailable. The React client communicates with the versioned FastAPI ride-session API; state remains in memory while persistence and real-time updates are deferred to later milestones.
+
+![RideSync ride session controls](docs/images/milestone-4-ride-session.png)

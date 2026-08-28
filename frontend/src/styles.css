@@ -91,6 +91,28 @@ body {
   margin-top: 1rem;
 }
 
+.ride-controls__created {
+  margin-top: 1rem;
+}
+
+.ride-controls__created .ride-controls__success {
+  margin-top: 0;
+}
+
+.ride-controls__actions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.share-ride {
+  margin-top: 0.5rem;
+}
+
+.share-ride__message {
+  font-size: 0.75rem;
+  margin: 0.25rem 0 0;
+}
+
 .ride-controls__success {
   color: #155724;
 }

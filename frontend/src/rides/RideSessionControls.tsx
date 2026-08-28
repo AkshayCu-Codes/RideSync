@@ -1,9 +1,12 @@
 import { type FormEvent, useState } from 'react'
 import { useRideSession } from '../hooks/useRideSession'
+import { ShareRideButton } from './ShareRideButton'
 
 export function RideSessionControls() {
   const [rideName, setRideName] = useState('')
-  const [rideId, setRideId] = useState('')
+  const [rideId, setRideId] = useState(() => {
+    return new URLSearchParams(window.location.search).get('rideId') ?? ''
+  })
   const [displayName, setDisplayName] = useState('')
   const { ride, participant, error, isCreating, isJoining, isLeaving, create, join, leave } =
     useRideSession()
@@ -51,9 +54,12 @@ export function RideSessionControls() {
       </form>
 
       {ride && (
-        <p className="ride-controls__success" role="status">
-          Created <strong>{ride.name}</strong>. Ride ID: <code>{ride.id}</code>
-        </p>
+        <div className="ride-controls__created" role="status">
+          <p className="ride-controls__success">
+            Created <strong>{ride.name}</strong>. Ride ID: <code>{ride.id}</code>
+          </p>
+          <ShareRideButton rideId={ride.id} />
+        </div>
       )}
 
       <form className="ride-controls__form" onSubmit={handleJoin}>
@@ -84,9 +90,12 @@ export function RideSessionControls() {
           <p className="ride-controls__success">
             Joined as <strong>{participant.display_name}</strong>.
           </p>
-          <button disabled={isLeaving} onClick={handleLeave} type="button">
-            {isLeaving ? 'Leaving…' : 'Leave ride'}
-          </button>
+          <div className="ride-controls__actions">
+            <ShareRideButton rideId={participant.ride_id} />
+            <button disabled={isLeaving} onClick={handleLeave} type="button">
+              {isLeaving ? 'Leaving…' : 'Leave ride'}
+            </button>
+          </div>
         </div>
       )}
       {error && <p className="ride-controls__error" role="alert">{error}</p>}
