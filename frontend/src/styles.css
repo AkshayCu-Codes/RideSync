@@ -25,7 +25,7 @@ body {
   width: 100%;
 }
 
-.app-header,
+.ride-controls,
 .status-card {
   background: rgb(255 255 255 / 92%);
   border-radius: 0.5rem;
@@ -36,13 +36,56 @@ body {
   z-index: 1;
 }
 
-.app-header {
+.ride-controls {
   left: 0;
   top: 0;
+  width: min(22rem, calc(100% - 2rem));
 }
 
-.app-header__brand {
-  font-weight: 700;
+.ride-controls__title {
+  font-size: 1.125rem;
+  margin: 0 0 1rem;
+}
+
+.ride-controls__form {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.ride-controls input,
+.ride-controls button {
+  border: 1px solid #b7c1cb;
+  border-radius: 0.25rem;
+  font: inherit;
+  padding: 0.5rem;
+}
+
+.ride-controls button {
+  background: #1267c5;
+  border-color: #1267c5;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ride-controls button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.ride-controls__success,
+.ride-controls__error {
+  font-size: 0.875rem;
+  margin: 1rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.ride-controls__success {
+  color: #155724;
+}
+
+.ride-controls__error {
+  color: #8a1212;
 }
 
 .status-card {
