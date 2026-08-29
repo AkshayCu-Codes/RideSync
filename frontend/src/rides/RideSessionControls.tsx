@@ -1,15 +1,27 @@
 import { type FormEvent, useState } from 'react'
-import { useRideSession } from '../hooks/useRideSession'
+import type { LocationSharingStatus } from '../hooks/useRideLocationSharing'
+import type { useRideSession } from '../hooks/useRideSession'
 import { ShareRideButton } from './ShareRideButton'
 
-export function RideSessionControls() {
+type RideSessionControlsProps = {
+  locationSharing: { error?: string; status: LocationSharingStatus }
+  session: ReturnType<typeof useRideSession>
+}
+
+function getLocationSharingMessage(status: LocationSharingStatus): string {
+  if (status === 'connected') return 'Live location sharing is active.'
+  if (status === 'connecting') return 'Connecting live location sharing…'
+  if (status === 'reconnecting') return 'Reconnecting live location sharing…'
+  return 'Live location sharing is inactive.'
+}
+
+export function RideSessionControls({ locationSharing, session }: RideSessionControlsProps) {
   const [rideName, setRideName] = useState('')
   const [rideId, setRideId] = useState(() => {
     return new URLSearchParams(window.location.search).get('rideId') ?? ''
   })
   const [displayName, setDisplayName] = useState('')
-  const { ride, participant, error, isCreating, isJoining, isLeaving, create, join, leave } =
-    useRideSession()
+  const { ride, participant, error, isCreating, isJoining, isLeaving, create, join, leave } = session
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -80,13 +92,16 @@ export function RideSessionControls() {
           required
           value={displayName}
         />
+        <p className="ride-controls__privacy-note">
+          Joining shares your live location with the other riders in this session.
+        </p>
         <button disabled={isJoining} type="submit">
           {isJoining ? 'Joining…' : 'Join ride'}
         </button>
       </form>
 
       {participant && (
-        <div className="ride-controls__membership" role="status">
+        <div className="ride-controls__membership">
           <p className="ride-controls__success">
             Joined as <strong>{participant.display_name}</strong>.
           </p>
@@ -96,6 +111,12 @@ export function RideSessionControls() {
               {isLeaving ? 'Leaving…' : 'Leave ride'}
             </button>
           </div>
+          <p className="ride-controls__location-status" role="status">
+            {getLocationSharingMessage(locationSharing.status)}
+          </p>
+          {locationSharing.error && (
+            <p className="ride-controls__error" role="alert">{locationSharing.error}</p>
+          )}
         </div>
       )}
       {error && <p className="ride-controls__error" role="alert">{error}</p>}

@@ -2,17 +2,22 @@ import { Loader } from '@googlemaps/js-api-loader'
 import { useEffect, useRef, useState } from 'react'
 import { environment } from '../config/environment'
 import type { Coordinates } from '../hooks/useGeolocation'
+import type { ParticipantLocation } from '../location/types'
 
 const initialCenter = { lat: 20, lng: 0 }
 
 type GoogleMapProps = {
   currentLocation?: Coordinates
+  participantLocations: ParticipantLocation[]
 }
 
-export function GoogleMap({ currentLocation }: GoogleMapProps) {
+export function GoogleMap({ currentLocation, participantLocations }: GoogleMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<google.maps.Map>()
   const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>()
+  const participantMarkerRefs = useRef(
+    new Map<string, google.maps.marker.AdvancedMarkerElement>(),
+  )
   const [error, setError] = useState<string>()
   const [mapReady, setMapReady] = useState(false)
 
@@ -83,6 +88,49 @@ export function GoogleMap({ currentLocation }: GoogleMapProps) {
 
     void showCurrentLocation()
   }, [currentLocation, mapReady])
+
+  useEffect(() => {
+    async function showParticipantLocations() {
+      if (!mapReady || !mapRef.current) return
+
+      const { AdvancedMarkerElement } = (await google.maps.importLibrary(
+        'marker',
+      )) as google.maps.MarkerLibrary
+      const visibleParticipantIds = new Set<string>()
+
+      participantLocations.forEach((participantLocation) => {
+        visibleParticipantIds.add(participantLocation.participantId)
+        const position = {
+          lat: participantLocation.latitude,
+          lng: participantLocation.longitude,
+        }
+        const marker = participantMarkerRefs.current.get(participantLocation.participantId)
+
+        if (marker) {
+          marker.position = position
+          return
+        }
+
+        participantMarkerRefs.current.set(
+          participantLocation.participantId,
+          new AdvancedMarkerElement({
+            map: mapRef.current,
+            position,
+            title: 'Ride participant',
+          }),
+        )
+      })
+
+      participantMarkerRefs.current.forEach((marker, participantId) => {
+        if (!visibleParticipantIds.has(participantId)) {
+          marker.remove()
+          participantMarkerRefs.current.delete(participantId)
+        }
+      })
+    }
+
+    void showParticipantLocations()
+  }, [mapReady, participantLocations])
 
   return (
     <section className="map" aria-label="RideSync map">

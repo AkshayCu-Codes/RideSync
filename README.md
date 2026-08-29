@@ -48,7 +48,7 @@ docker compose up --build
 
 ## Milestone status
 
-Milestone 4 adds the initial ride-session workflow: riders can create a session, join it with a display name, and leave it through the React client and versioned FastAPI endpoints. Session state is intentionally in-memory only; database persistence, real-time location sharing, and WebSockets have not yet been implemented.
+Milestone 5 adds real-time location sharing: joined riders publish browser geolocation over a ride-scoped WebSocket channel and see other active participants on the map. Session state, live locations, and WebSocket connections are intentionally process-local; database persistence, authentication, and horizontally scalable WebSocket infrastructure have not yet been implemented.
 
 ## Progress
 
@@ -63,3 +63,7 @@ The frontend displays a full-screen Google Map, requests browser geolocation, an
 Riders can create a session, join it with a display name, leave it, and share a join link through the map overlay. The browser share sheet supports WhatsApp and other installed sharing apps; a clipboard fallback is used where native sharing is unavailable. The React client communicates with the versioned FastAPI ride-session API; state remains in memory while persistence and real-time updates are deferred to later milestones.
 
 ![RideSync ride session controls](docs/images/milestone-4-ride-session.png)
+
+### Milestone 5 — Real-time location sharing
+
+Joined riders share their current browser location with active participants in the same ride. New participants receive a snapshot of current locations, and the client reconnects after transient connection loss.
