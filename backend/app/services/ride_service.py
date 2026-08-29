@@ -74,6 +74,12 @@ class InMemoryRideService:
                 raise ParticipantNotFoundError
             del ride.participants[participant_id]
 
+    def has_participant(self, ride_id: UUID, participant_id: UUID) -> bool:
+        """Return whether the participant currently belongs to the ride session."""
+        with self._lock:
+            ride = self._get_ride(ride_id)
+            return participant_id in ride.participants
+
     def _get_ride(self, ride_id: UUID) -> _Ride:
         try:
             return self._rides[ride_id]
